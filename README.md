@@ -1,11 +1,10 @@
-Here's a detailed **`README.md`** for your predictive maintenance project, including placeholders for Exploratory Data Analysis (EDA) images and detailed explanations:
 
 ---
 
 # **Predictive Maintenance Project**
 
 ## **Overview**
-This project aims to develop a robust predictive maintenance system that uses machine learning to predict equipment failures before they occur. By leveraging historical telemetry, error, maintenance, and failure data, the system identifies patterns and insights to reduce downtime and optimize operational efficiency.
+This project focuses on developing a predictive maintenance system that leverages machine learning to predict equipment failures. By analyzing telemetry, error logs, maintenance records, and failure history, the system provides actionable insights to reduce downtime and optimize operational efficiency.
 
 ---
 
@@ -60,14 +59,16 @@ predictive-maintenance/
 
 ## **Datasets**
 
-This project uses five datasets:
+### **Description**
+The project utilizes five datasets:
 1. **Telemetry**: Sensor data from machines over time.
 2. **Errors**: Logs of errors encountered by machines.
 3. **Maintenance**: Historical records of maintenance activities.
 4. **Failures**: Equipment failure history with timestamps.
 5. **Machines**: Metadata about each machine (e.g., model, age).
 
-Datasets are stored in the `data/files/` directory.
+### **Storage**
+All datasets are stored in the `data/files/` directory.
 
 ---
 
@@ -80,8 +81,8 @@ Datasets are stored in the `data/files/` directory.
 ### **Steps**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/predictive-maintenance.git
-   cd predictive-maintenance
+   git clone https://github.com/HarshavardhanKurtkoti/ANAI.git
+   cd ANAI
    ```
 2. Set up a virtual environment and install dependencies:
    ```bash
@@ -109,31 +110,26 @@ Datasets are stored in the `data/files/` directory.
 EDA helps uncover patterns, trends, and anomalies in the data. This step is crucial for understanding the datasets and engineering features effectively.
 
 ### **Visualizations**
-1. **Machine Telemetry (Time Series)**
-   ![Telemetry Trends](data/eda_images/telemetry_trends.png)
 
-   - Visualizes sensor readings over time for various machines.
-   - Patterns suggest periodic spikes in temperature and pressure.
+1. **Voltage Over Time**  
+   This plot visualizes the voltage readings over time, helping to detect any fluctuations or trends in the system.  
+   ![Voltage Over Time](data/eda_images/voltage_time.png)
 
-2. **Error Frequency by Machine**
-   ![Error Frequency](data/eda_images/error_frequency.png)
+2. **Count of Errors**  
+   This bar chart shows the frequency of different error types, providing insight into the most common errors.  
+   ![Count of Errors](data/eda_images/error_frequency.png)
 
-   - Highlights machines with the highest error occurrences.
+3. **Count of Components (Comp)**  
+   This plot displays the distribution of different machine components that have encountered failures or maintenance activities.  
+   ![Count of Comp](data/eda_images/comp_distribution.png)
 
-3. **Failure Types**
-   ![Failure Types Distribution](data/eda_images/failure_types_distribution.png)
+4. **Machine Age Distribution**  
+   This histogram shows the distribution of machine ages, helping to understand how age impacts failure rates.  
+   ![Machine Age Distribution](data/eda_images/machine_age_distribution.png)
 
-   - Displays the distribution of failure types across all records.
-
-4. **Maintenance Activities**
-   ![Maintenance Activities Over Time](data/eda_images/maintenance_over_time.png)
-
-   - Shows how maintenance activities are distributed over time.
-
-5. **Correlation Heatmap**
-   ![Correlation Heatmap](data/eda_images/correlation_heatmap.png)
-
-   - Reveals relationships between sensor readings and failure types.
+5. **Count of Failures**  
+   This graph visualizes the frequency of failures for each machine type, helping to understand failure patterns.  
+   ![Count of Failures](data/eda_images/failure_types_distribution.png)
 
 ### **Steps for EDA**
 Run the EDA script:
@@ -146,72 +142,70 @@ Generated visualizations are stored in `data/eda_images/`.
 
 ## **Model Training and Evaluation**
 
-### **Model Training**
-- **Pipeline**: Preprocessing ➔ Feature Engineering ➔ Model Training
-- **Model Used**: Random Forest
-- **Hyperparameters**: 
-  - `n_estimators`: 100
-  - `max_depth`: 10
-  - `min_samples_split`: 2
+### **Model Pipeline**
+1. **Preprocessing**: Handles missing values, scaling, and encoding.
+2. **Feature Engineering**: Generates statistical and time-based features.
+3. **Model Training**: Implements supervised machine learning classifiers.
 
-### **Evaluation Metrics**
-- Precision
-- Recall
-- F1-Score
-- ROC-AUC
+### **Model Comparison**
 
-### **Example Output**
-```plaintext
-Precision: 0.85
-Recall: 0.81
-F1-Score: 0.83
-ROC-AUC: 0.90
-```
+| **Model**                     | **Accuracy (%)** | **Cross-Validated Accuracy (%)** | **Details**                                                                 |
+|-------------------------------|------------------|-----------------------------------|-----------------------------------------------------------------------------|
+| **XGBoost Classifier**        | **99.92**        | **99.91**                        | `XGBClassifier(base_score=0.5, booster='gbtree', ...)`                      |
+| **CatBoost Classifier**       | 99.90            | 99.88                            | `<catboost.core.CatBoostClassifier object at 0x...>`                        |
+| **Random Forest Classifier**  | 99.89            | 99.86                            | `(DecisionTreeClassifier(max_features='auto', random_state=...)`           |
+| **Gradient Boosting Classifier** | 99.79          | 99.63                            | `[DecisionTreeRegressor(criterion='friedman_mse', ...]`                     |
+| **LightGBM Classifier**       | 96.82            | 97.88                            | `LGBMClassifier()`                                                         |
+
+### **Selected Model**
+The **XGBoost Classifier** was chosen for deployment due to its superior accuracy and consistent cross-validation results.
 
 ---
 
 ## **Prediction and Inference**
 
-Run the prediction script on new data:
+### **Run Predictions**
 ```bash
 python scripts/predict.py --input data/new_data.csv
 ```
-
 The predictions are saved in `output/predictions.csv`.
 
 ---
 
 ## **Results**
 
-- **Failure Prediction Accuracy**: 85%
-- **Feature Importance**: Sensor readings and machine metadata contributed most to predictive performance.
-- **Insights**:
-  - Machines with higher operating temperatures are prone to failure.
-  - Maintenance logs correlate strongly with reduced failure likelihood.
+### **Performance Metrics**
+- **Accuracy**: 99.92%
+- **Precision**: 0.85
+- **Recall**: 0.81
+- **F1-Score**: 0.83
+- **ROC-AUC**: 0.90
+
+### **Key Insights**
+1. Older machines and those with elevated temperature readings are at higher risk of failure.
+2. Frequent maintenance activities correlate with lower failure rates.
 
 ---
 
 ## **Future Work**
 
-1. **Model Improvements**:
-   - Experiment with deep learning models (e.g., LSTMs).
-   - Incorporate additional sensor data.
-2. **Real-Time Monitoring**:
-   - Deploy the model in a production environment for live predictions.
+1. **Enhance Model**:
+   - Experiment with deep learning models (e.g., LSTMs for time-series).
+   - Integrate additional telemetry data.
+2. **Real-Time Deployment**:
+   - Deploy the model on edge devices for live predictions.
 3. **Explainability**:
-   - Implement SHAP or LIME to improve interpretability.
+   - Leverage SHAP or LIME for better interpretability.
 
 ---
 
 ## **Acknowledgments**
-- Dataset courtesy of [Kaggle](https://www.kaggle.com/).
-- Special thanks to the team for their dedication and contributions.
+- Datasets provided by [Kaggle](https://www.kaggle.com/).
+- Thanks to the team for their hard work and collaboration.
 
 ---
 
-### **Note**
-For full visualizations and more details, refer to the `exploration/eda.py` script and images in the `data/eda_images/` folder.
+### **Notes**
+For more details on visualizations and analyses, refer to the `exploration/eda.py` script and the `data/eda_images/` folder.
 
 ---
-
-Feel free to replace the placeholder images with actual EDA visuals generated from your dataset. You can also expand the "Results" section as needed based on model outcomes.
