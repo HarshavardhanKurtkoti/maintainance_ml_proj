@@ -81,7 +81,7 @@ All datasets are stored in the `data/files/` directory.
 ### **Steps**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/HarshavardhanKurtkoti/ANAI.git
+   git clone https://github.com/HarshavardhanKurtkoti/maintainance_ml_proj.git
    cd ANAI
    ```
 2. Set up a virtual environment and install dependencies:
