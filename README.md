@@ -198,14 +198,3 @@ The predictions are saved in `output/predictions.csv`.
    - Leverage SHAP or LIME for better interpretability.
 
 ---
-
-## **Acknowledgments**
-- Datasets provided by [Kaggle](https://www.kaggle.com/).
-- Thanks to the team for their hard work and collaboration.
-
----
-
-### **Notes**
-For more details on visualizations and analyses, refer to the `exploration/eda.py` script and the `data/eda_images/` folder.
-
----
